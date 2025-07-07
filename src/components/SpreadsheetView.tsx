@@ -7,7 +7,7 @@ interface SpreadsheetViewProps {
   data: SpreadsheetData;
   activeCell: { row: number; col: number } | null;
   editingCell: { row: number; col: number } | null;
-  cellValue: string;
+  cellValue: string; // This is the value being edited or selected from App.tsx
   selectionStart: { row: number; col: number } | null;
   selectionEnd: { row: number; col: number } | null;
   columnWidths: { [key: string]: number };
@@ -24,7 +24,7 @@ interface SpreadsheetViewProps {
   onContextMenu: (e: React.MouseEvent, type: 'cell' | 'column' | 'row', target: any) => void;
   onAddRow: () => void;
   onApplyFilter: (colName: string, filterValue: string) => void;
-  onClearFilter: () => void; // Re-added this prop
+  onClearFilter: () => void;
   onApplySort: (colName: string, direction: 'asc' | 'desc') => void;
   currentSort: { colName: string; direction: 'asc' | 'desc' } | null;
   filteredAndSortedData: SpreadsheetData;
@@ -51,7 +51,7 @@ const SpreadsheetView: React.FC<SpreadsheetViewProps> = ({
   onContextMenu,
   onAddRow,
   onApplyFilter,
-  onClearFilter, // Destructured here
+  onClearFilter,
   onApplySort,
   currentSort,
   filteredAndSortedData,
@@ -60,15 +60,17 @@ const SpreadsheetView: React.FC<SpreadsheetViewProps> = ({
     console.log(`${action} button clicked!`);
   };
 
-  const currentCellValue = activeCell ? data[activeCell.row][columnNames[activeCell.col]] : '';
-  const formulaBarValue = editingCell ? cellValue : currentCellValue;
+  const formulaBarValue = cellValue;
 
   const [filterInput, setFilterInput] = useState<string>('');
   const [filterCol, setFilterCol] = useState<string>('');
 
   const handleFilterApply = () => {
+    console.log('SpreadsheetView: Attempting to apply filter.', { filterCol, filterInput });
     if (filterCol && filterInput) {
       onApplyFilter(filterCol, filterInput);
+    } else {
+      console.log('SpreadsheetView: Filter not applied. Column or input value is empty.');
     }
   };
 
@@ -112,7 +114,7 @@ const SpreadsheetView: React.FC<SpreadsheetViewProps> = ({
             Apply Filter
           </button>
           <button
-            onClick={onClearFilter} // Used here
+            onClick={onClearFilter}
             className="px-4 py-2 bg-gray-200 text-gray-800 text-sm font-medium rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-opacity-50 transition duration-150 ease-in-out shadow-sm"
           >
             Clear Filter

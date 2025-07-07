@@ -30,7 +30,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch, onButtonClick, userId }) => {
           alt="Company Logo"
           className="w-8 h-8 text-blue-600" // You might need to adjust styling for your SVG
         />
-        <span className="text-xl font-bold text-gray-800">Gob</span>
+        <span className="text-xl font-bold text-gray-800">Inscripts</span>
       </div>
 
       {/* Search Bar */}
